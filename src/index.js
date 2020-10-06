@@ -50,6 +50,7 @@ class Game extends React.Component {
       history: [
         {
           squares: Array(9).fill(null),
+          id: [],
         },
       ],
       stepNumber: 0,
@@ -63,8 +64,11 @@ class Game extends React.Component {
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) return;
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+    const r = Math.floor(i / 3) + 1;
+    const c = (i % 3) + 1;
+    const id = [r, c];
     this.setState({
-      history: history.concat([{squares}]),
+      history: history.concat([{squares, id}]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
@@ -81,9 +85,11 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-
     const moves = history.map((step, move) => {
-      const desc = move ? `Go to move #${move}` : `Go to game start`;
+      const id = step.id;
+      const desc = move
+        ? `Go to move #${move} - row ${id[0]}, column ${id[1]}`
+        : `Go to game start`;
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -140,7 +146,7 @@ function calculateWinner(squares) {
 
 // TODO:
 
-// 1. Display the location for each move in the format (col, row) in the move history list.
+// 1. DONE - Display the location for each move in the format (col, row) in the move history list.
 
 // 2. Bold the currently selected item in the move list.
 
