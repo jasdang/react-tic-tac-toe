@@ -16,30 +16,29 @@ class Board extends React.Component {
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        key={i}
       />
     );
   }
-
+  renderRow() {
+    const rows = [];
+    let n = 0;
+    for (let i = 0; i < 3; i++) {
+      const squares = [];
+      for (let j = 0; j < 3; j++) {
+        squares.push(this.renderSquare(n));
+        n++;
+      }
+      rows.push(
+        <div className='board-row' key={`row-${i}`}>
+          {squares}
+        </div>
+      );
+    }
+    return rows;
+  }
   render() {
-    return (
-      <div>
-        <div className='board-row'>
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className='board-row'>
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className='board-row'>
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
+    return <div>{this.renderRow()}</div>;
   }
 }
 
@@ -158,7 +157,7 @@ function calculateWinner(squares) {
 
 // 2. DONE - old the currently selected item in the move list.
 
-// 3. Rewrite Board to use two loops to make the squares instead of hardcoding them.
+// 3. DONE - Rewrite Board to use two loops to make the squares instead of hardcoding them.
 
 // 4. Add a toggle button that lets you sort the moves in either ascending or descending order.
 
